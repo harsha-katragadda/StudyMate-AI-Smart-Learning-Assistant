@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Study Assistant</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<h1>📚 AI Study Assistant</h1>
+
+<div class="card">
+    <h2>Upload Notes</h2>
+    <input type="file" id="fileInput">
+    <button onclick="upload()">Upload</button>
+</div>
+
+<div class="card">
+    <h2>Ask Question</h2>
+    <input type="text" id="query" placeholder="Enter your question...">
+    <button onclick="ask()">Ask</button>
+
+    <div id="answerBox" class="output"></div>
+</div>
+
+<div class="card">
+    <h2>Generate Quiz</h2>
+    <input type="text" id="topic" placeholder="Enter topic...">
+    <button onclick="quiz()">Generate</button>
+
+    <div id="quizBox" class="output"></div>
+</div>
+
+<script>
+async function upload() {
+    let file = document.getElementById("fileInput").files[0];
+    let formData = new FormData();
+    formData.append("file", file);
+
+    await fetch("/upload", {
+        method: "POST",
+        body: formData
+    });
+
+    alert("Uploaded successfully!");
+}
+
+async function ask() {
+    let q = document.getElementById("query").value;
+
+    let res = await fetch(`/ask?query=${q}`);
+    let data = await res.json();
+
+    let output = data.results.join("\n\n");
+
+    document.getElementById("answerBox").innerText = output;
+}
+
+async function quiz() {
+    let t = document.getElementById("topic").value;
+
+    let res = await fetch(`/quiz?topic=${t}`);
+    let data = await res.json();
+
+    document.getElementById("quizBox").innerText = data.quiz;
+}
+</script>
+
+</body>
+</html>

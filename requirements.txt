@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+sentence-transformers
+faiss-cpu
+openai
+pypdf
+jinja2
+python-multipart
+numpy
